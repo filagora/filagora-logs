@@ -18,34 +18,21 @@ function logMigration(): object
 
 afterEach(function () {
     Schema::dropIfExists('email_logs');
-    Schema::dropIfExists('audits');
     config(['forumkit.table_prefix' => 'forumkit_']);
     Schema::dropIfExists('forumkit_email_logs');
-    Schema::dropIfExists('forumkit_audits');
     logMigration()->up();
 });
 
-it('ships a snapshot of the two tables that matches the migration, column order included', function () {
+it('ships a snapshot of the table that matches the migration, column order included', function () {
     $snapshot = app(SchemaRegistry::class)->get('logs');
 
     expect($snapshot)->not->toBeNull()
-        ->and(array_keys($snapshot->tables))->toBe(['audits', 'email_logs'])
+        ->and(array_keys($snapshot->tables))->toBe(['email_logs'])
         ->and($snapshot->migrationNames())->toBe([LOG_MIGRATION]);
 
     foreach ($snapshot->tables as $base => $expected) {
         expect(TableShape::inspect($base)->differencesFrom($expected, compareColumnOrder: true))->toBe([], $base);
     }
-});
-
-it('pins the audit table to the shape owen-it/laravel-auditing creates', function () {
-    $audits = TableShape::inspect('audits');
-
-    expect(array_keys($audits->columns))->toBe(['id', 'user_type', 'user_id', 'event', 'auditable_type', 'auditable_id', 'old_values', 'new_values', 'url', 'ip_address', 'user_agent', 'tags', 'created_at', 'updated_at'])
-        ->and($audits->columns['ip_address']['type'])->toBe('varchar(45)')
-        ->and($audits->columns['user_agent']['type'])->toBe('varchar(1023)')
-        ->and($audits->columns['old_values']['type'])->toBe('text')
-        ->and($audits->columns['auditable_id']['nullable'])->toBeFalse()
-        ->and(array_keys($audits->indexes))->toEqualCanonicalizing(['primary', 'audits_auditable_type_auditable_id_index', 'audits_user_id_user_type_index']);
 });
 
 it('pins the email log table: json recipients, status default and its three indexes', function () {

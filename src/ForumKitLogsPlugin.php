@@ -6,7 +6,6 @@ namespace ForumKit\Logs;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use ForumKit\Logs\Filament\Resources\Audits\AuditResource;
 use ForumKit\Logs\Filament\Resources\EmailLogs\EmailLogResource;
 
 class ForumKitLogsPlugin implements Plugin
@@ -24,7 +23,6 @@ class ForumKitLogsPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel->resources([
-            AuditResource::class,
             EmailLogResource::class,
         ]);
     }

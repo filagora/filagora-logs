@@ -8,30 +8,12 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * `audits` is the table owen-it/laravel-auditing writes (the viewer reads what it recorded),
- * created in the shape that package ships with its default `user` morph prefix.
+ * The email log: one row per outgoing message, in the shape the live site's table has.
  */
 return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(Tables::name('audits'), function (Blueprint $table): void {
-            $table->bigIncrements('id');
-            $table->string('user_type')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('event');
-            $table->morphs('auditable');
-            $table->text('old_values')->nullable();
-            $table->text('new_values')->nullable();
-            $table->text('url')->nullable();
-            $table->ipAddress('ip_address')->nullable();
-            $table->string('user_agent', 1023)->nullable();
-            $table->string('tags')->nullable();
-            $table->timestamps();
-
-            $table->index(['user_id', 'user_type']);
-        });
-
         Schema::create(Tables::name('email_logs'), function (Blueprint $table): void {
             $table->id();
             $table->string('correlation_id')->nullable()->index();
@@ -54,6 +36,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists(Tables::name('email_logs'));
-        Schema::dropIfExists(Tables::name('audits'));
     }
 };
