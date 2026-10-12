@@ -5,6 +5,10 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-12
+
+First release.
+
 - Table `email_logs`, with a schema snapshot for `forumkit:adopt`.
 - A read-only Filament screen for the email log, behind the `forumkit.logs.view` ability, with a "Logs" navigation group.
 - Email activity logging (`mail_log_sending` setting, off by default) and `EmailLog::forRecipient()`.
