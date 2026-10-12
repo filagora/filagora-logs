@@ -23,7 +23,6 @@ use ForumKit\Logs\Tests\Support\TestSupportServiceProvider;
 use ForumKit\Logs\Tests\Support\TestUser;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use OwenIt\Auditing\AuditingServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
@@ -44,7 +43,6 @@ abstract class TestCase extends Orchestra
             WidgetsServiceProvider::class,
             CoreServiceProvider::class,
             EntitlementsServiceProvider::class,
-            AuditingServiceProvider::class,
             LogsServiceProvider::class,
             TestSupportServiceProvider::class,
             TestPanelProvider::class,
@@ -55,7 +53,6 @@ abstract class TestCase extends Orchestra
     {
         $app['config']->set('forumkit.user_model', TestUser::class);
         $app['config']->set('auth.providers.users.model', TestUser::class);
-        $app['config']->set('audit.console', true);
         $app['config']->set('app.key', 'base64:'.base64_encode(str_repeat('k', 32)));
     }
 }

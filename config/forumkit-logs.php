@@ -9,7 +9,7 @@ return [
     | Gate abilities
     |--------------------------------------------------------------------------
     |
-    | Maps the ability that guards the audit and email log screens to the entitlement
+    | Maps the ability that guards the email log screen to the entitlement
     | that allows it. Point it at a different entitlement to use your own keys.
     |
     */

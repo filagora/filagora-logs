@@ -16,7 +16,6 @@ use ForumKit\Core\Settings\SettingType;
 use ForumKit\Entitlements\Registry\Definition;
 use ForumKit\Entitlements\Registry\EntitlementRegistry;
 use ForumKit\Entitlements\Services\AuthorizationService;
-use ForumKit\Logs\Models\Audit;
 use ForumKit\Logs\Services\EmailActivityLog;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Mail\Events\MessageSending;
@@ -24,7 +23,6 @@ use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use OwenIt\Auditing\Models\Audit as BaseAudit;
 
 class LogsServiceProvider extends ServiceProvider
 {
@@ -32,7 +30,6 @@ class LogsServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/forumkit-logs.php', 'forumkit-logs');
 
-        $this->useForumKitAuditModel();
         $this->app->singleton(EmailActivityLog::class);
     }
 
@@ -61,17 +58,6 @@ class LogsServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../config/forumkit-logs.php' => config_path('forumkit-logs.php'),
             ], 'forumkit-logs-config');
-        }
-    }
-
-    /**
-     * owen-it/laravel-auditing writes through the model named in `audit.implementation`; point it
-     * at the prefixed table unless the host has chosen its own.
-     */
-    private function useForumKitAuditModel(): void
-    {
-        if (config('audit.implementation') === null || config('audit.implementation') === BaseAudit::class) {
-            config(['audit.implementation' => Audit::class]);
         }
     }
 
