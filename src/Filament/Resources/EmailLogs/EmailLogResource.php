@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace Filagora\Logs\Filament\Resources\EmailLogs;
 
 use BackedEnum;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 use Filagora\Core\Navigation\NavigationGroupRegistry;
 use Filagora\Entitlements\Filament\Concerns\GatedByAbility;
 use Filagora\Logs\Filament\Resources\EmailLogs\Pages\ListEmailLogs;
@@ -17,6 +13,10 @@ use Filagora\Logs\Filament\Resources\EmailLogs\Schemas\EmailLogInfolist;
 use Filagora\Logs\Filament\Resources\EmailLogs\Tables\EmailLogsTable;
 use Filagora\Logs\Models\EmailLog;
 use Filagora\Logs\Support\Abilities;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 

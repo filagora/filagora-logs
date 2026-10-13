@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Filagora\Logs\Filament\Resources\EmailLogs\Tables;
 
+use Filagora\Logs\Models\EmailLog;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filagora\Logs\Models\EmailLog;
 use Illuminate\Database\Eloquent\Builder;
 
 class EmailLogsTable

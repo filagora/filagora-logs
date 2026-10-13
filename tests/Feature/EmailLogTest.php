@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Filament\Facades\Filament;
 use Filagora\Core\Models\Setting;
 use Filagora\Core\Settings\SettingDefinitions;
 use Filagora\Core\Settings\SettingsRegistry;
@@ -14,6 +13,7 @@ use Filagora\Logs\Filament\Resources\EmailLogs\Pages\ViewEmailLog;
 use Filagora\Logs\Models\EmailLog;
 use Filagora\Logs\Tests\Support\Rebuild;
 use Filagora\Logs\Tests\Support\TestUser;
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Livewire;

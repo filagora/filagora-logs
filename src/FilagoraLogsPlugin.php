@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Filagora\Logs;
 
+use Filagora\Logs\Filament\Resources\EmailLogs\EmailLogResource;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Filagora\Logs\Filament\Resources\EmailLogs\EmailLogResource;
 
 class FilagoraLogsPlugin implements Plugin
 {

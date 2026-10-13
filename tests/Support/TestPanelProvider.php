@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Filagora\Logs\Tests\Support;
 
-use Filament\Panel;
-use Filament\PanelProvider;
 use Filagora\Core\FilagoraCorePlugin;
 use Filagora\Entitlements\FilagoraEntitlementsPlugin;
 use Filagora\Logs\FilagoraLogsPlugin;
+use Filament\Panel;
+use Filament\PanelProvider;
 
 class TestPanelProvider extends PanelProvider
 {
