@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use ForumKit\Logs\Tests\TestCase;
+use Filagora\Logs\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 pest()->extend(TestCase::class)->use(RefreshDatabase::class)->in('Feature');

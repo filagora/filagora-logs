@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Filament\Resources\EmailLogs;
+namespace Filagora\Logs\Filament\Resources\EmailLogs;
 
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use ForumKit\Core\Navigation\NavigationGroupRegistry;
-use ForumKit\Entitlements\Filament\Concerns\GatedByAbility;
-use ForumKit\Logs\Filament\Resources\EmailLogs\Pages\ListEmailLogs;
-use ForumKit\Logs\Filament\Resources\EmailLogs\Pages\ViewEmailLog;
-use ForumKit\Logs\Filament\Resources\EmailLogs\Schemas\EmailLogInfolist;
-use ForumKit\Logs\Filament\Resources\EmailLogs\Tables\EmailLogsTable;
-use ForumKit\Logs\Models\EmailLog;
-use ForumKit\Logs\Support\Abilities;
+use Filagora\Core\Navigation\NavigationGroupRegistry;
+use Filagora\Entitlements\Filament\Concerns\GatedByAbility;
+use Filagora\Logs\Filament\Resources\EmailLogs\Pages\ListEmailLogs;
+use Filagora\Logs\Filament\Resources\EmailLogs\Pages\ViewEmailLog;
+use Filagora\Logs\Filament\Resources\EmailLogs\Schemas\EmailLogInfolist;
+use Filagora\Logs\Filament\Resources\EmailLogs\Tables\EmailLogsTable;
+use Filagora\Logs\Models\EmailLog;
+use Filagora\Logs\Support\Abilities;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
@@ -45,17 +45,17 @@ class EmailLogResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('forumkit-logs::messages.email_logs.navigation_label');
+        return __('filagora-logs::messages.email_logs.navigation_label');
     }
 
     public static function getModelLabel(): string
     {
-        return __('forumkit-logs::messages.email_logs.model_label');
+        return __('filagora-logs::messages.email_logs.model_label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('forumkit-logs::messages.email_logs.plural_model_label');
+        return __('filagora-logs::messages.email_logs.plural_model_label');
     }
 
     public static function form(Schema $schema): Schema

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Tests\Support;
+namespace Filagora\Logs\Tests\Support;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;

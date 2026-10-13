@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 use Filament\Facades\Filament;
-use ForumKit\Core\Models\Setting;
-use ForumKit\Core\Settings\SettingDefinitions;
-use ForumKit\Core\Settings\SettingsRegistry;
-use ForumKit\Core\Settings\SettingType;
-use ForumKit\Entitlements\Models\UserEntitlementGrant;
-use ForumKit\Logs\Filament\Resources\EmailLogs\EmailLogResource;
-use ForumKit\Logs\Filament\Resources\EmailLogs\Pages\ListEmailLogs;
-use ForumKit\Logs\Filament\Resources\EmailLogs\Pages\ViewEmailLog;
-use ForumKit\Logs\Models\EmailLog;
-use ForumKit\Logs\Tests\Support\Rebuild;
-use ForumKit\Logs\Tests\Support\TestUser;
+use Filagora\Core\Models\Setting;
+use Filagora\Core\Settings\SettingDefinitions;
+use Filagora\Core\Settings\SettingsRegistry;
+use Filagora\Core\Settings\SettingType;
+use Filagora\Entitlements\Models\UserEntitlementGrant;
+use Filagora\Logs\Filament\Resources\EmailLogs\EmailLogResource;
+use Filagora\Logs\Filament\Resources\EmailLogs\Pages\ListEmailLogs;
+use Filagora\Logs\Filament\Resources\EmailLogs\Pages\ViewEmailLog;
+use Filagora\Logs\Models\EmailLog;
+use Filagora\Logs\Tests\Support\Rebuild;
+use Filagora\Logs\Tests\Support\TestUser;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Livewire;
@@ -81,7 +81,7 @@ it('keeps one row per message across several sends', function () {
 
 it('never blocks the mail when logging fails', function () {
     enableEmailLogging();
-    Schema::drop('forumkit_email_logs');
+    Schema::drop('filagora_email_logs');
 
     expect(fn () => sendTestMail())->not->toThrow(Throwable::class);
 
@@ -104,7 +104,7 @@ it('finds the rows for a recipient in to, cc or bcc, by the given spelling and i
 
 it('lists and shows email logs to a viewer, read-only', function () {
     $user = TestUser::make('Viewer');
-    UserEntitlementGrant::create(['user_id' => $user->id, 'entitlement_key' => 'forumkit.logs.view', 'grant_type' => 'manual']);
+    UserEntitlementGrant::create(['user_id' => $user->id, 'entitlement_key' => 'filagora.logs.view', 'grant_type' => 'manual']);
     actingAs($user);
     $log = EmailLog::create(['to' => ['jane@example.test'], 'subject' => 'Hi there', 'status' => 'sent', 'notification_class' => 'App\\Notifications\\Welcome']);
 

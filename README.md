@@ -1,8 +1,8 @@
-# ForumKit Logs
+# Filagora Logs
 
-An email log for ForumKit, as a Laravel 13 / Filament 5 plugin. Requires
-[`zcwilt/forumkit-core`](https://github.com/zcwilt/forumkit-core) and
-[`zcwilt/forumkit-entitlements`](https://github.com/zcwilt/forumkit-entitlements).
+An email log for Filagora, as a Laravel 13 / Filament 5 plugin. Requires
+[`filagora/filagora-core`](https://github.com/filagora/filagora-core) and
+[`filagora/filagora-entitlements`](https://github.com/filagora/filagora-entitlements).
 
 > The package is at `0.1`: the API may change between `0.x` minor versions.
 
@@ -14,23 +14,23 @@ An email log for ForumKit, as a Laravel 13 / Filament 5 plugin. Requires
   the mail: a failure to log is reported to the application log and the message goes out. The
   `EmailLog::forRecipient($address)` scope finds a person's rows (given spelling and lowercase;
   a blank address matches nothing), for privacy export and erasure.
-- **Access.** The screen is read-only and needs the `forumkit.logs.view` ability, mapped in
-  `config/forumkit-logs.php` to the entitlement of the same name. Point it at your own key there.
-- **Table** (`email_logs`, prefixed `forumkit_` by default) matches an existing site's index for
-  index, so `php artisan forumkit:adopt` accepts it.
+- **Access.** The screen is read-only and needs the `filagora.logs.view` ability, mapped in
+  `config/filagora-logs.php` to the entitlement of the same name. Point it at your own key there.
+- **Table** (`email_logs`, prefixed `filagora_` by default) matches an existing site's index for
+  index, so `php artisan filagora:adopt` accepts it.
 
 An audit log viewer is planned but not part of this release.
 
 ## Install
 
 ```bash
-composer require zcwilt/forumkit-logs
+composer require filagora/filagora-logs
 php artisan migrate
-php artisan forumkit:entitlements:sync
+php artisan filagora:entitlements:sync
 ```
 
 ```php
-->plugin(\ForumKit\Logs\ForumKitLogsPlugin::make())
+->plugin(\Filagora\Logs\FilagoraLogsPlugin::make())
 ```
 
 Then turn on the "Log Email Sending Activity" setting if you want the email log.

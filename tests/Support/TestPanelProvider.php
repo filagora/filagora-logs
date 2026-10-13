@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Tests\Support;
+namespace Filagora\Logs\Tests\Support;
 
 use Filament\Panel;
 use Filament\PanelProvider;
-use ForumKit\Core\ForumKitCorePlugin;
-use ForumKit\Entitlements\ForumKitEntitlementsPlugin;
-use ForumKit\Logs\ForumKitLogsPlugin;
+use Filagora\Core\FilagoraCorePlugin;
+use Filagora\Entitlements\FilagoraEntitlementsPlugin;
+use Filagora\Logs\FilagoraLogsPlugin;
 
 class TestPanelProvider extends PanelProvider
 {
@@ -18,8 +18,8 @@ class TestPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->plugin(ForumKitCorePlugin::make())
-            ->plugin(ForumKitEntitlementsPlugin::make())
-            ->plugin(ForumKitLogsPlugin::make());
+            ->plugin(FilagoraCorePlugin::make())
+            ->plugin(FilagoraEntitlementsPlugin::make())
+            ->plugin(FilagoraLogsPlugin::make());
     }
 }

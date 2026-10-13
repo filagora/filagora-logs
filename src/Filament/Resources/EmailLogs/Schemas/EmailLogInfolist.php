@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Filament\Resources\EmailLogs\Schemas;
+namespace Filagora\Logs\Filament\Resources\EmailLogs\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -12,7 +12,7 @@ class EmailLogInfolist
 {
     public static function configure(Schema $schema): Schema
     {
-        $t = static fn (string $key): string => __("forumkit-logs::messages.email_logs.infolist.{$key}");
+        $t = static fn (string $key): string => __("filagora-logs::messages.email_logs.infolist.{$key}");
 
         return $schema->components([
             Section::make($t('message'))
@@ -28,7 +28,7 @@ class EmailLogInfolist
                 ->columns(2),
             Section::make($t('delivery'))
                 ->schema([
-                    TextEntry::make('message_id')->label(__('forumkit-logs::messages.email_logs.table.message_id'))->copyable()->placeholder('-'),
+                    TextEntry::make('message_id')->label(__('filagora-logs::messages.email_logs.table.message_id'))->copyable()->placeholder('-'),
                     TextEntry::make('correlation_id')->label($t('correlation_id'))->copyable()->placeholder('-'),
                     TextEntry::make('sent_at')->dateTime()->placeholder('-'),
                     TextEntry::make('created_at')->dateTime(),

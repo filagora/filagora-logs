@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs;
+namespace Filagora\Logs;
 
-use ForumKit\Core\Modules\Module;
-use ForumKit\Core\Modules\ModuleRegistry;
-use ForumKit\Core\Navigation\NavigationGroupDefinition;
-use ForumKit\Core\Navigation\NavigationGroupRegistry;
-use ForumKit\Core\Schema\PackageSchema;
-use ForumKit\Core\Schema\SchemaRegistry;
-use ForumKit\Core\Settings\SettingDefinition;
-use ForumKit\Core\Settings\SettingsRegistry;
-use ForumKit\Core\Settings\SettingType;
-use ForumKit\Entitlements\Registry\Definition;
-use ForumKit\Entitlements\Registry\EntitlementRegistry;
-use ForumKit\Entitlements\Services\AuthorizationService;
-use ForumKit\Logs\Services\EmailActivityLog;
+use Filagora\Core\Modules\Module;
+use Filagora\Core\Modules\ModuleRegistry;
+use Filagora\Core\Navigation\NavigationGroupDefinition;
+use Filagora\Core\Navigation\NavigationGroupRegistry;
+use Filagora\Core\Schema\PackageSchema;
+use Filagora\Core\Schema\SchemaRegistry;
+use Filagora\Core\Settings\SettingDefinition;
+use Filagora\Core\Settings\SettingsRegistry;
+use Filagora\Core\Settings\SettingType;
+use Filagora\Entitlements\Registry\Definition;
+use Filagora\Entitlements\Registry\EntitlementRegistry;
+use Filagora\Entitlements\Services\AuthorizationService;
+use Filagora\Logs\Services\EmailActivityLog;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
@@ -28,7 +28,7 @@ class LogsServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/forumkit-logs.php', 'forumkit-logs');
+        $this->mergeConfigFrom(__DIR__.'/../config/filagora-logs.php', 'filagora-logs');
 
         $this->app->singleton(EmailActivityLog::class);
     }
@@ -36,7 +36,7 @@ class LogsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->make(ModuleRegistry::class)->register(
-            new Module('logs', 'ForumKit Logs', 'zcwilt/forumkit-logs', requires: ['core', 'entitlements']),
+            new Module('logs', 'Filagora Logs', 'filagora/filagora-logs', requires: ['core', 'entitlements']),
         );
 
         $this->app->make(SchemaRegistry::class)->register(
@@ -51,13 +51,13 @@ class LogsServiceProvider extends ServiceProvider
         Event::listen(MessageSending::class, [EmailActivityLog::class, 'recordSending']);
         Event::listen(MessageSent::class, [EmailActivityLog::class, 'recordSent']);
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'forumkit-logs');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'filagora-logs');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/forumkit-logs.php' => config_path('forumkit-logs.php'),
-            ], 'forumkit-logs-config');
+                __DIR__.'/../config/filagora-logs.php' => config_path('filagora-logs.php'),
+            ], 'filagora-logs-config');
         }
     }
 
@@ -65,7 +65,7 @@ class LogsServiceProvider extends ServiceProvider
     {
         $this->app->make(NavigationGroupRegistry::class)->register(new NavigationGroupDefinition(
             key: 'logs',
-            label: fn (): string => __('forumkit-logs::messages.navigation_groups.logs'),
+            label: fn (): string => __('filagora-logs::messages.navigation_groups.logs'),
             icon: 'heroicon-o-clipboard-document-list',
             sort: 90,
         ));
@@ -75,7 +75,7 @@ class LogsServiceProvider extends ServiceProvider
     {
         $registry = $this->app->make(EntitlementRegistry::class);
 
-        foreach (config('forumkit-logs.gates', []) as $entitlement) {
+        foreach (config('filagora-logs.gates', []) as $entitlement) {
             if (is_string($entitlement) && $entitlement !== '') {
                 $registry->define(new Definition($entitlement, wildcardChildren: false));
             }
@@ -84,7 +84,7 @@ class LogsServiceProvider extends ServiceProvider
 
     private function defineGates(): void
     {
-        foreach (config('forumkit-logs.gates', []) as $ability => $entitlement) {
+        foreach (config('filagora-logs.gates', []) as $ability => $entitlement) {
             if (! is_string($ability) || ! is_string($entitlement)) {
                 continue;
             }

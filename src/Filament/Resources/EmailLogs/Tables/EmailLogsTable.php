@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Filament\Resources\EmailLogs\Tables;
+namespace Filagora\Logs\Filament\Resources\EmailLogs\Tables;
 
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use ForumKit\Logs\Models\EmailLog;
+use Filagora\Logs\Models\EmailLog;
 use Illuminate\Database\Eloquent\Builder;
 
 class EmailLogsTable
 {
     public static function configure(Table $table): Table
     {
-        $t = static fn (string $key): string => __("forumkit-logs::messages.email_logs.table.{$key}");
+        $t = static fn (string $key): string => __("filagora-logs::messages.email_logs.table.{$key}");
 
         return $table
             ->defaultSort('created_at', 'desc')
@@ -45,8 +45,8 @@ class EmailLogsTable
             ])
             ->filters([
                 SelectFilter::make('status')->options([
-                    'sending' => __('forumkit-logs::messages.email_logs.statuses.sending'),
-                    'sent' => __('forumkit-logs::messages.email_logs.statuses.sent'),
+                    'sending' => __('filagora-logs::messages.email_logs.statuses.sending'),
+                    'sent' => __('filagora-logs::messages.email_logs.statuses.sent'),
                 ]),
             ])
             ->recordActions([ViewAction::make()])

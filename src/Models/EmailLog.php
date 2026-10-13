@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Models;
+namespace Filagora\Logs\Models;
 
-use ForumKit\Core\Support\Tables;
+use Filagora\Core\Support\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;

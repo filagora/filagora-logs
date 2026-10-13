@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use ForumKit\Core\Schema\Adopter;
-use ForumKit\Core\Schema\AdoptionStatus;
-use ForumKit\Core\Schema\SchemaRegistry;
-use ForumKit\Core\Schema\TableShape;
+use Filagora\Core\Schema\Adopter;
+use Filagora\Core\Schema\AdoptionStatus;
+use Filagora\Core\Schema\SchemaRegistry;
+use Filagora\Core\Schema\TableShape;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-const LOG_MIGRATION = '2026_10_12_000000_create_forumkit_log_tables';
+const LOG_MIGRATION = '2026_10_12_000000_create_filagora_log_tables';
 
 function logMigration(): object
 {
@@ -18,8 +18,8 @@ function logMigration(): object
 
 afterEach(function () {
     Schema::dropIfExists('email_logs');
-    config(['forumkit.table_prefix' => 'forumkit_']);
-    Schema::dropIfExists('forumkit_email_logs');
+    config(['filagora.table_prefix' => 'filagora_']);
+    Schema::dropIfExists('filagora_email_logs');
     logMigration()->up();
 });
 
@@ -45,9 +45,9 @@ it('pins the email log table: json recipients, status default and its three inde
 });
 
 it('adopts the live tables, which have no prefix, and records the migration', function () {
-    config(['forumkit.table_prefix' => '']);
+    config(['filagora.table_prefix' => '']);
     logMigration()->down();
-    config(['forumkit.table_prefix' => '']);
+    config(['filagora.table_prefix' => '']);
     logMigration()->up();
     DB::table('migrations')->where('migration', LOG_MIGRATION)->delete();
 
@@ -55,13 +55,13 @@ it('adopts the live tables, which have no prefix, and records the migration', fu
 
     expect($plan->status)->toBe(AdoptionStatus::Adoptable, implode('; ', $plan->differences));
 
-    $this->artisan('forumkit:adopt', ['--package' => 'logs'])->assertExitCode(0);
+    $this->artisan('filagora:adopt', ['--package' => 'logs'])->assertExitCode(0);
 
     expect(DB::table('migrations')->where('migration', LOG_MIGRATION)->exists())->toBeTrue();
 });
 
 it('refuses tables that lost an index', function () {
-    config(['forumkit.table_prefix' => '']);
+    config(['filagora.table_prefix' => '']);
     logMigration()->down();
     logMigration()->up();
     Schema::table('email_logs', fn ($table) => $table->dropIndex('email_logs_status_index'));
