@@ -14,7 +14,7 @@ return [
     |
     */
     'gates' => [
-        'forumkit.logs.view' => 'forumkit.logs.view',
+        'filagora.logs.view' => 'filagora.logs.view',
     ],
 
 ];

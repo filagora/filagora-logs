@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Services;
+namespace Filagora\Logs\Services;
 
-use ForumKit\Core\Settings\SettingsRegistry;
-use ForumKit\Logs\Models\EmailLog;
+use Filagora\Core\Settings\SettingsRegistry;
+use Filagora\Logs\Models\EmailLog;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Log;

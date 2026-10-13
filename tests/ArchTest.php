@@ -8,8 +8,8 @@ arch('no debug calls')
 
 arch('env() is only used in config files')
     ->expect('env')
-    ->not->toBeUsedIn('ForumKit\Logs');
+    ->not->toBeUsedIn('Filagora\Logs');
 
 arch('source files use strict types')
-    ->expect('ForumKit\Logs')
+    ->expect('Filagora\Logs')
     ->toUseStrictTypes();

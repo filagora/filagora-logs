@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Filament\Resources\EmailLogs\Pages;
+namespace Filagora\Logs\Filament\Resources\EmailLogs\Pages;
 
+use Filagora\Logs\Filament\Resources\EmailLogs\EmailLogResource;
 use Filament\Resources\Pages\ViewRecord;
-use ForumKit\Logs\Filament\Resources\EmailLogs\EmailLogResource;
 
 class ViewEmailLog extends ViewRecord
 {

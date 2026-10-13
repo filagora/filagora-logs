@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs;
+namespace Filagora\Logs;
 
+use Filagora\Logs\Filament\Resources\EmailLogs\EmailLogResource;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use ForumKit\Logs\Filament\Resources\EmailLogs\EmailLogResource;
 
-class ForumKitLogsPlugin implements Plugin
+class FilagoraLogsPlugin implements Plugin
 {
     public static function make(): static
     {
@@ -17,7 +17,7 @@ class ForumKitLogsPlugin implements Plugin
 
     public function getId(): string
     {
-        return 'forumkit-logs';
+        return 'filagora-logs';
     }
 
     public function register(Panel $panel): void

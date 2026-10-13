@@ -2,10 +2,16 @@
 
 declare(strict_types=1);
 
-namespace ForumKit\Logs\Tests;
+namespace Filagora\Logs\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
+use Filagora\Core\CoreServiceProvider;
+use Filagora\Entitlements\EntitlementsServiceProvider;
+use Filagora\Logs\LogsServiceProvider;
+use Filagora\Logs\Tests\Support\TestPanelProvider;
+use Filagora\Logs\Tests\Support\TestSupportServiceProvider;
+use Filagora\Logs\Tests\Support\TestUser;
 use Filament\Actions\ActionsServiceProvider;
 use Filament\FilamentServiceProvider;
 use Filament\Forms\FormsServiceProvider;
@@ -15,12 +21,6 @@ use Filament\Schemas\SchemasServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
-use ForumKit\Core\CoreServiceProvider;
-use ForumKit\Entitlements\EntitlementsServiceProvider;
-use ForumKit\Logs\LogsServiceProvider;
-use ForumKit\Logs\Tests\Support\TestPanelProvider;
-use ForumKit\Logs\Tests\Support\TestSupportServiceProvider;
-use ForumKit\Logs\Tests\Support\TestUser;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -51,7 +51,7 @@ abstract class TestCase extends Orchestra
 
     protected function defineEnvironment($app): void
     {
-        $app['config']->set('forumkit.user_model', TestUser::class);
+        $app['config']->set('filagora.user_model', TestUser::class);
         $app['config']->set('auth.providers.users.model', TestUser::class);
         $app['config']->set('app.key', 'base64:'.base64_encode(str_repeat('k', 32)));
     }
