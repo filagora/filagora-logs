@@ -23,6 +23,8 @@ class EmailActivityLog
 {
     public const SETTING = 'mail_log_sending';
 
+    public const RETENTION_SETTING = 'mail_log_retention_days';
+
     private const CORRELATION_HEADER = 'X-Email-Log-Id';
 
     public function __construct(private readonly SettingsRegistry $settings) {}
