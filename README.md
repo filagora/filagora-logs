@@ -1,8 +1,10 @@
 # Filagora Logs
 
 An email log for Filagora, as a Laravel 13 / Filament 5 plugin. Requires
-[`filagora/filagora-core`](https://github.com/filagora/filagora-core) and
-[`filagora/filagora-entitlements`](https://github.com/filagora/filagora-entitlements).
+[`filagora/filagora-core`](https://github.com/filagora/filagora-core). Who may open the screen is
+answered by core's `AccessChecker`: install
+[`filagora/filagora-entitlements`](https://github.com/filagora/filagora-entitlements) and it is
+answered from entitlement grants, or bind your own checker. With neither, nobody may.
 
 > The package is at `0.1`: the API may change between `0.x` minor versions.
 
@@ -15,7 +17,8 @@ An email log for Filagora, as a Laravel 13 / Filament 5 plugin. Requires
   `EmailLog::forRecipient($address)` scope finds a person's rows (given spelling and lowercase;
   a blank address matches nothing), for privacy export and erasure.
 - **Access.** The screen is read-only and needs the `filagora.logs.view` ability, mapped in
-  `config/filagora-logs.php` to the entitlement of the same name. Point it at your own key there.
+  `config/filagora-logs.php` to a key of the same name (an entitlement, when entitlements is
+  installed). Point it at your own key there.
 - **Table** (`email_logs`, prefixed `filagora_` by default) matches an existing site's index for
   index, so `php artisan filagora:adopt` accepts it.
 
@@ -26,7 +29,7 @@ An audit log viewer is planned but not part of this release.
 ```bash
 composer require filagora/filagora-logs
 php artisan migrate
-php artisan filagora:entitlements:sync
+php artisan filagora:entitlements:sync   # only with entitlements installed
 ```
 
 ```php

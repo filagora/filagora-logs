@@ -13,15 +13,13 @@ use Filagora\Core\Schema\SchemaRegistry;
 use Filagora\Core\Settings\SettingDefinition;
 use Filagora\Core\Settings\SettingsRegistry;
 use Filagora\Core\Settings\SettingType;
+use Filagora\Core\Support\GateAbilities;
 use Filagora\Entitlements\Registry\Definition;
 use Filagora\Entitlements\Registry\EntitlementRegistry;
-use Filagora\Entitlements\Services\AuthorizationService;
 use Filagora\Logs\Services\EmailActivityLog;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class LogsServiceProvider extends ServiceProvider
@@ -36,7 +34,7 @@ class LogsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->make(ModuleRegistry::class)->register(
-            new Module('logs', 'Filagora Logs', 'filagora/filagora-logs', requires: ['core', 'entitlements']),
+            new Module('logs', 'Filagora Logs', 'filagora/filagora-logs', requires: ['core']),
         );
 
         $this->app->make(SchemaRegistry::class)->register(
@@ -71,26 +69,27 @@ class LogsServiceProvider extends ServiceProvider
         ));
     }
 
+    /**
+     * With `filagora-entitlements` installed, the key the ability maps to is declared so
+     * `filagora:entitlements:sync` creates its definition. Without it there is nothing to
+     * declare it to.
+     */
     private function declareEntitlements(): void
     {
+        if (! class_exists(EntitlementRegistry::class) || ! $this->app->bound(EntitlementRegistry::class)) {
+            return;
+        }
+
         $registry = $this->app->make(EntitlementRegistry::class);
 
-        foreach (config('filagora-logs.gates', []) as $entitlement) {
-            if (is_string($entitlement) && $entitlement !== '') {
-                $registry->define(new Definition($entitlement, wildcardChildren: false));
-            }
+        foreach (GateAbilities::keys('filagora-logs.gates') as $entitlement) {
+            $registry->define(new Definition($entitlement, wildcardChildren: false));
         }
     }
 
     private function defineGates(): void
     {
-        foreach (config('filagora-logs.gates', []) as $ability => $entitlement) {
-            if (! is_string($ability) || ! is_string($entitlement)) {
-                continue;
-            }
-
-            Gate::define($ability, fn (?Authenticatable $user): bool => $this->app->make(AuthorizationService::class)->allows($user, $entitlement));
-        }
+        GateAbilities::define('filagora-logs.gates');
     }
 
     private function declareSettings(): void

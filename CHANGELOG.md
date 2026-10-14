@@ -5,6 +5,10 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- **`filagora-entitlements` is now optional.** The email log ability goes through core's `AccessChecker`; entitlements answers it when installed, a host can bind its own. The gate comes from core's `GateAbilities`, the screen uses core's `GatedByAbility`, the module now requires only `core`, and `filagora-entitlements` moves from `require` to `suggest`. Behaviour with entitlements installed is unchanged. Requires `filagora/filagora-core` `^0.2.1`.
+
 ## [0.2.0] - 2026-10-13
 
 ### Changed
