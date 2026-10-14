@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Filagora\Logs\Filament\Resources\EmailLogs;
 
 use BackedEnum;
+use Filagora\Core\Filament\Concerns\GatedByAbility;
 use Filagora\Core\Navigation\NavigationGroupRegistry;
-use Filagora\Entitlements\Filament\Concerns\GatedByAbility;
 use Filagora\Logs\Filament\Resources\EmailLogs\Pages\ListEmailLogs;
 use Filagora\Logs\Filament\Resources\EmailLogs\Pages\ViewEmailLog;
 use Filagora\Logs\Filament\Resources\EmailLogs\Schemas\EmailLogInfolist;
