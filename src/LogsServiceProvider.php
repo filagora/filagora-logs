@@ -8,14 +8,19 @@ use Filagora\Core\Modules\Module;
 use Filagora\Core\Modules\ModuleRegistry;
 use Filagora\Core\Navigation\NavigationGroupDefinition;
 use Filagora\Core\Navigation\NavigationGroupRegistry;
+use Filagora\Core\Privacy\PrivacyContributorRegistry;
+use Filagora\Core\Privacy\RetentionRuleRegistry;
+use Filagora\Core\Privacy\TableRetentionRule;
 use Filagora\Core\Schema\PackageSchema;
 use Filagora\Core\Schema\SchemaRegistry;
 use Filagora\Core\Settings\SettingDefinition;
 use Filagora\Core\Settings\SettingsRegistry;
 use Filagora\Core\Settings\SettingType;
 use Filagora\Core\Support\GateAbilities;
+use Filagora\Core\Support\Tables;
 use Filagora\Entitlements\Registry\Definition;
 use Filagora\Entitlements\Registry\EntitlementRegistry;
+use Filagora\Logs\Privacy\EmailLogContributor;
 use Filagora\Logs\Services\EmailActivityLog;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
@@ -45,6 +50,7 @@ class LogsServiceProvider extends ServiceProvider
         $this->declareEntitlements();
         $this->defineGates();
         $this->declareSettings();
+        $this->registerPrivacy();
 
         Event::listen(MessageSending::class, [EmailActivityLog::class, 'recordSending']);
         Event::listen(MessageSent::class, [EmailActivityLog::class, 'recordSent']);
@@ -92,14 +98,44 @@ class LogsServiceProvider extends ServiceProvider
         GateAbilities::define('filagora-logs.gates');
     }
 
+    /**
+     * What the email log contributes to export, erasure and retention, for the compliance package
+     * (or any host) to run. Nothing here needs that package installed.
+     */
+    private function registerPrivacy(): void
+    {
+        $this->app->make(PrivacyContributorRegistry::class)->register(new EmailLogContributor);
+
+        $this->app->make(RetentionRuleRegistry::class)->register(new TableRetentionRule(
+            'logs.email_logs',
+            Tables::name('email_logs'),
+            'created_at',
+            fn (): int => $this->app->make(SettingsRegistry::class)->integer(EmailActivityLog::RETENTION_SETTING, 60),
+        ));
+    }
+
     private function declareSettings(): void
     {
-        $this->app->make(SettingsRegistry::class)->define(new SettingDefinition(
+        $settings = $this->app->make(SettingsRegistry::class);
+        $this->declareRetentionSetting($settings);
+
+        $settings->define(new SettingDefinition(
             EmailActivityLog::SETTING,
             SettingType::Boolean,
             false,
             label: 'Log Email Sending Activity',
             description: 'When enabled, every outgoing email is recorded in the Email Logs resource (recipients, subject, notification class, and delivery status).',
+        ));
+    }
+
+    private function declareRetentionSetting(SettingsRegistry $settings): void
+    {
+        $settings->define(new SettingDefinition(
+            EmailActivityLog::RETENTION_SETTING,
+            SettingType::Integer,
+            60,
+            label: 'Email Log Retention Days',
+            description: 'How many days email log rows are kept before the privacy prune deletes them. Zero keeps them.',
         ));
     }
 }

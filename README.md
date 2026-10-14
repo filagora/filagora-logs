@@ -19,6 +19,10 @@ answered from entitlement grants, or bind your own checker. With neither, nobody
 - **Access.** The screen is read-only and needs the `filagora.logs.view` ability, mapped in
   `config/filagora-logs.php` to a key of the same name (an entitlement, when entitlements is
   installed). Point it at your own key there.
+- **Privacy.** Logs registers a `PrivacyContributor` (the rows that list a person's address, for
+  an export or an erasure) and a retention rule that deletes rows older than the setting
+  `mail_log_retention_days` (60 by default) with core. With `filagora-compliance` installed, privacy
+  requests and `filagora:compliance:prune` use them.
 - **Table** (`email_logs`, prefixed `filagora_` by default) matches an existing site's index for
   index, so `php artisan filagora:adopt` accepts it.
 

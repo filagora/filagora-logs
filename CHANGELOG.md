@@ -5,6 +5,12 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-14
+
+### Added
+
+- **Privacy contributions**, registered with core's registries, so the compliance package (or any host) can export, erase and prune without logs knowing it: `EmailLogContributor` (the rows that list a person's address, matched as `EmailLog::forRecipient()` does; the address is read before the account is anonymised) and a retention rule `logs.email_logs` that deletes rows older than the new setting `mail_log_retention_days` (default 60; zero keeps them). Nothing here needs `filagora-compliance`; without it nothing runs the rule.
+
 ## [0.2.1] - 2026-10-14
 
 ### Changed
