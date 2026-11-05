@@ -21,10 +21,13 @@ final class EmailLogContributor implements PrivacyContributor
 
     public function export(Model $user): array
     {
+        // A list of rows, not a keyed array as the contract documents: it has always been, and the
+        // export format must not change. Newer PHPStan versions notice the difference.
+        // @phpstan-ignore return.type
         return EmailLog::query()
             ->forRecipient($this->address($user))
             ->orderBy('id')
-            ->get(['id', 'status', 'mailer', 'to', 'cc', 'bcc', 'subject', 'notification_class', 'sent_at', 'created_at'])
+            ->get(['id', 'status', 'mailer', 'to', 'cc', 'bcc', 'subject', 'body', 'notification_class', 'sent_at', 'created_at'])
             ->toArray();
     }
 

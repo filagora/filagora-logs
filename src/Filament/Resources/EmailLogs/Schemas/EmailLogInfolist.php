@@ -26,6 +26,14 @@ class EmailLogInfolist
                     TextEntry::make('notification_class')->label($t('notification_class'))->placeholder('-')->columnSpanFull(),
                 ])
                 ->columns(2),
+            Section::make($t('body'))
+                ->schema([
+                    TextEntry::make('body')
+                        ->hiddenLabel()
+                        ->placeholder($t('body_not_stored'))
+                        ->extraAttributes(['class' => 'whitespace-pre-wrap break-words'])
+                        ->columnSpanFull(),
+                ]),
             Section::make($t('delivery'))
                 ->schema([
                     TextEntry::make('message_id')->label(__('filagora-logs::messages.email_logs.table.message_id'))->copyable()->placeholder('-'),

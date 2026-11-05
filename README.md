@@ -23,6 +23,11 @@ answered from entitlement grants, or bind your own checker. With neither, nobody
   an export or an erasure) and a retention rule that deletes rows older than the setting
   `mail_log_retention_days` (60 by default) with core. With `filagora-compliance` installed, privacy
   requests and `filagora:compliance:prune` use them.
+- **Message bodies** are off by default (`bodies.enabled` in `config/filagora-logs.php`). When on, the
+  log keeps each message's text and shows it on the view page and in the privacy export.
+  `bodies.never_store` lists the notifications whose text is never kept, because it carries a live
+  token or signed link or private content; password reset and email verification are listed, and a
+  site must add its own.
 - **Table** (`email_logs`, prefixed `filagora_` by default) matches an existing site's index for
   index, so `php artisan filagora:adopt` accepts it.
 

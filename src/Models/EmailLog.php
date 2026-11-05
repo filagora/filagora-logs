@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
  * @property list<string>|null $cc
  * @property list<string>|null $bcc
  * @property string|null $subject
+ * @property string|null $body
  * @property string|null $notification_class
  * @property string|null $message_id
  * @property Carbon|null $sent_at
@@ -35,6 +36,7 @@ class EmailLog extends Model
         'cc',
         'bcc',
         'subject',
+        'body',
         'notification_class',
         'message_id',
         'sent_at',

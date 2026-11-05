@@ -12,7 +12,10 @@ final class Rebuild
     {
         $migration = require __DIR__.'/../../database/migrations/2026_10_12_000000_create_filagora_log_tables.php';
 
+        $body = require __DIR__.'/../../database/migrations/2026_10_18_171237_add_body_to_filagora_email_logs_table.php';
+
         Schema::dropIfExists('filagora_email_logs');
         $migration->up();
+        $body->up();
     }
 }
