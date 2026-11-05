@@ -24,7 +24,7 @@ final class EmailLogContributor implements PrivacyContributor
         return EmailLog::query()
             ->forRecipient($this->address($user))
             ->orderBy('id')
-            ->get(['id', 'status', 'mailer', 'to', 'cc', 'bcc', 'subject', 'notification_class', 'sent_at', 'created_at'])
+            ->get(['id', 'status', 'mailer', 'to', 'cc', 'bcc', 'subject', 'body', 'notification_class', 'sent_at', 'created_at'])
             ->toArray();
     }
 

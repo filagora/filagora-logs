@@ -21,6 +21,8 @@ return [
         ],
         'infolist' => [
             'message' => 'Message',
+            'body' => 'Body',
+            'body_not_stored' => 'Body not stored (a sensitive or empty message, or sent while bodies were off).',
             'delivery' => 'Delivery',
             'notification_class' => 'Notification class',
             'correlation_id' => 'Correlation ID',

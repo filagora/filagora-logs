@@ -32,6 +32,16 @@ it('contributes the log rows that list a person\'s address, and erases them', fu
     expect(EmailLog::query()->pluck('subject')->all())->toBe(['Not hers']);
 });
 
+it('exports the stored body with the rest of a person\'s log rows', function () {
+    $user = TestUser::make('Jane');
+    $user->forceFill(['email' => 'jane@example.test'])->save();
+    EmailLog::create(['to' => ['jane@example.test'], 'subject' => 'Welcome', 'status' => 'sent', 'body' => 'Welcome aboard']);
+
+    $rows = app(PrivacyContributorRegistry::class)->all()['email_logs']->export($user);
+
+    expect($rows[0]['body'])->toBe('Welcome aboard');
+});
+
 it('never exports or erases the whole log for a user with no address', function () {
     $user = TestUser::make('Nobody');
     $user->forceFill(['email' => ''])->save();

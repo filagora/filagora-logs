@@ -16,7 +16,7 @@ use Throwable;
 
 /**
  * Records outgoing mail when the `mail_log_sending` setting is on: a row when a message starts
- * sending, completed when it has been sent. Logging never blocks the mail itself, so every
+ * sending, completed when it has been sent, with its text if `bodies.enabled` is on. Logging never blocks the mail itself, so every
  * call swallows its own failure and reports it to the log.
  */
 class EmailActivityLog
@@ -90,8 +90,30 @@ class EmailActivityLog
             'cc' => $this->addresses($message->getCc()),
             'bcc' => $this->addresses($message->getBcc()),
             'subject' => $message->getSubject(),
+            'body' => $this->bodyOf($message, $data['__laravel_notification'] ?? null),
             'notification_class' => $data['__laravel_notification'] ?? null,
         ];
+    }
+
+    /**
+     * The message's text, when bodies are kept and this kind of mail may be stored. A mail with a
+     * live token or a private conversation in it is never stored: staff read this log.
+     */
+    private function bodyOf(Email $message, mixed $notificationClass): ?string
+    {
+        if (! config('filagora-logs.bodies.enabled')
+            || (is_string($notificationClass) && in_array($notificationClass, (array) config('filagora-logs.bodies.never_store'), true))) {
+            return null;
+        }
+
+        $text = $message->getTextBody();
+
+        if (! is_string($text) || trim($text) === '') {
+            $html = $message->getHtmlBody();
+            $text = is_string($html) ? trim(strip_tags(preg_replace('#<(style|script)\b.*?</\1>#is', '', $html) ?? $html)) : '';
+        }
+
+        return $text === '' ? null : $text;
     }
 
     /**

@@ -75,6 +75,14 @@ return [
                     'auto_increment' => false,
                     'generation' => null,
                 ],
+                'body' => [
+                    'type' => 'mediumtext',
+                    'nullable' => true,
+                    'default' => null,
+                    'collation' => 'utf8mb4_unicode_ci',
+                    'auto_increment' => false,
+                    'generation' => null,
+                ],
                 'notification_class' => [
                     'type' => 'varchar(255)',
                     'nullable' => true,

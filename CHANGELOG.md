@@ -5,6 +5,10 @@ All notable changes to this package are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Message bodies in the email log, off by default (`bodies.enabled`). `bodies.never_store` lists the notifications whose text is left out, password resets and email verification to start with. Shown on the log's view page and included in the privacy export. New column `email_logs.body`, in the migrations and the adoption snapshot.
+
 ## [0.2.2] - 2026-10-14
 
 ### Added

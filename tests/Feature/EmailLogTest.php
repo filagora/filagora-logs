@@ -14,7 +14,10 @@ use Filagora\Logs\Models\EmailLog;
 use Filagora\Logs\Tests\Support\Rebuild;
 use Filagora\Logs\Tests\Support\TestUser;
 use Filament\Facades\Filament;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification as BaseNotification;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Livewire;
 
@@ -35,6 +38,83 @@ function sendTestMail(string $to = 'Jane@Example.test', string $subject = 'Hello
 {
     Mail::raw('body', fn ($message) => $message->to($to)->cc('cc@example.test')->subject($subject));
 }
+
+class SecretLinkNotification extends BaseNotification
+{
+    public function via(): array
+    {
+        return ['mail'];
+    }
+
+    public function toMail(): MailMessage
+    {
+        return (new MailMessage)->subject('Confirm')->line('Your private link: https://example.test/confirm/abc123');
+    }
+}
+
+function mailBodies(bool $enabled = true): void
+{
+    config(['filagora-logs.bodies.enabled' => $enabled, 'filagora-logs.bodies.never_store' => [SecretLinkNotification::class]]);
+}
+
+it('stores no body unless bodies are switched on', function () {
+    enableEmailLogging();
+
+    sendTestMail();
+
+    expect(EmailLog::query()->firstOrFail()->body)->toBeNull();
+});
+
+it('stores the message text when bodies are on', function () {
+    enableEmailLogging();
+    mailBodies();
+
+    Mail::raw('Hello Jane, your plugin was approved.', fn ($message) => $message->to('jane@example.test')->subject('Approved'));
+
+    expect(EmailLog::query()->firstOrFail()->body)->toBe('Hello Jane, your plugin was approved.');
+});
+
+it('falls back to the text of the HTML part, without styles or scripts', function () {
+    enableEmailLogging();
+    mailBodies();
+
+    Mail::html('<style>p{color:red}</style><p>Visible text</p><script>alert(1)</script>', fn ($message) => $message->to('jane@example.test')->subject('Html'));
+
+    expect(EmailLog::query()->firstOrFail()->body)->toBe('Visible text');
+});
+
+it('never stores the text of a mail that carries a live link', function () {
+    enableEmailLogging();
+    mailBodies();
+
+    Notification::route('mail', 'jane@example.test')->notify(new SecretLinkNotification);
+
+    $log = EmailLog::query()->firstOrFail();
+
+    expect($log->notification_class)->toBe(SecretLinkNotification::class)
+        ->and($log->subject)->toBe('Confirm')
+        ->and($log->body)->toBeNull();
+});
+
+it('leaves the body empty for a message with no text', function () {
+    enableEmailLogging();
+    mailBodies();
+
+    Mail::raw('   ', fn ($message) => $message->to('jane@example.test')->subject('Blank'));
+
+    expect(EmailLog::query()->firstOrFail()->body)->toBeNull();
+});
+
+it('shows the stored body on the view page, and says when there is none', function () {
+    $user = TestUser::make('Viewer');
+    UserEntitlementGrant::create(['user_id' => $user->id, 'entitlement_key' => 'filagora.logs.view', 'grant_type' => 'manual', 'starts_at' => now()->subMinute()]);
+    actingAs($user);
+    $with = EmailLog::create(['to' => ['a@example.test'], 'subject' => 'With', 'status' => 'sent', 'body' => 'The stored words']);
+    $without = EmailLog::create(['to' => ['b@example.test'], 'subject' => 'Without', 'status' => 'sent']);
+
+    Livewire::test(ViewEmailLog::class, ['record' => $with->getKey()])->assertSee('The stored words');
+    Livewire::test(ViewEmailLog::class, ['record' => $without->getKey()])->assertSee('Body not stored');
+});
 
 it('declares the setting off by default, with the live key and type', function () {
     $definition = app(SettingDefinitions::class)->get('mail_log_sending');
