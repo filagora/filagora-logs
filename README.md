@@ -10,6 +10,30 @@ answered from entitlement grants, or bind your own checker. With neither, nobody
 
 ## What it provides
 
+### Overview
+
+Email logs for Filagora.
+
+### Tables
+
+`email_logs`, prefixed `filagora_` by default. A site that already has them can run `php artisan filagora:adopt` instead of migrating.
+
+### Commands
+
+This package adds no commands.
+
+### Events
+
+This package fires no events.
+
+### Access
+
+| Ability | Entitlement key |
+| --- | --- |
+| `filagora.logs.view` | `filagora.logs.view` |
+
+### Using it
+
 - **Email log.** A read-only Filament screen over every outgoing message. When the `mail_log_sending` setting is on (it is off by default), every
   outgoing message is recorded: recipients (to, cc, bcc), subject, mailer, the notification class
   that sent it, and its status (`sending`, then `sent` with the message id). Logging never blocks
