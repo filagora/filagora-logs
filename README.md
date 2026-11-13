@@ -8,7 +8,7 @@ answered from entitlement grants, or bind your own checker. With neither, nobody
 
 > The package is at `0.1`: the API may change between `0.x` minor versions.
 
-## What it does
+## What it provides
 
 - **Email log.** A read-only Filament screen over every outgoing message. When the `mail_log_sending` setting is on (it is off by default), every
   outgoing message is recorded: recipients (to, cc, bcc), subject, mailer, the notification class
@@ -33,6 +33,10 @@ answered from entitlement grants, or bind your own checker. With neither, nobody
 
 An audit log viewer is planned but not part of this release.
 
+## Requirements
+
+PHP 8.4, Laravel 13 and Filament 5. Tested against MariaDB 11.4. Requires [`filagora/filagora-core`](https://github.com/filagora/filagora-core).
+
 ## Install
 
 ```bash
@@ -47,13 +51,30 @@ php artisan filagora:entitlements:sync   # only with entitlements installed
 
 Then turn on the "Log Email Sending Activity" setting if you want the email log.
 
+## Configuration
+
+`config/filagora-logs.php` is merged with the host's copy, so list only what
+differs. Publish it with `php artisan vendor:publish --tag=filagora-logs-config`.
+
+## Extending
+
+Extend through documented contracts, events and registries. Anything not documented
+is `@internal`.
+
 ## Testing
 
 ```bash
 composer test
 ```
 
-Tests run against a real MariaDB database named `testing`.
+Tests run against a real MariaDB, never SQLite, so engine behaviour (FULLTEXT,
+`ONLY_FULL_GROUP_BY`, collation) matches production. Host and credentials come from
+your environment; the database is always named `testing`, never your development one.
+
+## Local development (DDEV)
+
+`.ddev/` is included. `ddev start` creates both `db` and `testing` (run `ddev restart` once
+if `testing` is missing), then `ddev exec vendor/bin/pest`.
 
 ## Licence
 
